@@ -38,20 +38,17 @@ try:
     hourChimeState = client.hourChimeState()
     print 'Hourly chimes are: ' + ('On' if hourChimeState else 'Off')
 
-    # Play the test
-    client.test()
+    while True:
 
-    # Wait...
-    time.sleep(5)
+        fileName = raw_input("What to play?")
 
-    # BELLS!
-    client.play('3peal.mp3')
+        # BELLS!
+        client.play(fileName)
 
-    # Wait...
-    time.sleep(15)
+        raw_input("Stop?")
 
-    # Stop!
-    client.stop()
+        # Stop!
+        client.stop()
 
     # Close!
     transport.close()

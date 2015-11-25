@@ -31,7 +31,7 @@ class BaltimoreHandler:
     # Load and play the given filename
     def play(self, filename):
         print 'Playing audio file: ' + filename
-        pygame.mixer.music.load(filename)
+        pygame.mixer.music.load('audio/' + filename)
         pygame.mixer.music.play(-1)
 
     # Fade the audio out.
