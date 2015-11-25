@@ -32,12 +32,18 @@ class BaltimoreHandler:
     def play(self, filename):
         print 'Playing audio file: ' + filename
         pygame.mixer.music.load(filename)
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)
 
     # Fade the audio out.
     def stop(self):
         print 'Stopping current audio.'
         pygame.mixer.music.fadeout(3000)
+
+    # Load and play the test files
+    def test(self):
+        print 'Playing test audio file.'
+        pygame.mixer.music.load('test/test.wav')
+        pygame.mixer.music.play()
 
 
 # Here are our threads!

@@ -38,11 +38,17 @@ try:
     hourChimeState = client.hourChimeState()
     print 'Hourly chimes are: ' + ('On' if hourChimeState else 'Off')
 
-    # Play!
-    client.play('audio/test.wav')
+    # Play the test
+    client.test()
 
     # Wait...
-    time.sleep(2)
+    time.sleep(5)
+
+    # BELLS!
+    client.play('3peal.mp3')
+
+    # Wait...
+    time.sleep(15)
 
     # Stop!
     client.stop()

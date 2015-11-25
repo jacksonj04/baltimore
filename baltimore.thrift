@@ -20,6 +20,9 @@ service Baltimore {
    // Stop playing a sound!
    void stop(),
 
+   // Play a test audio file
+   void test(),
+
    // Turn hourly bongs on and off.
    void hourChimeOn(),
    void hourChimeOff(),
