@@ -1,4 +1,4 @@
-import sys
+import sys, yaml, time
 sys.path.append('gen-py')
 
 from baltimore import Baltimore
@@ -8,28 +8,47 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 
+# Load up the config
+with open("config.yml", 'r') as configFile:
+    conf = yaml.load(configFile)
+
 try:
 
-  # Make socket
-  transport = TSocket.TSocket('localhost', 9090)
+    # Make socket
+    transport = TSocket.TSocket(conf['server'], 9090)
 
-  # Buffering is critical. Raw sockets are very slow
-  transport = TTransport.TBufferedTransport(transport)
+    # Buffering is critical. Raw sockets are very slow
+    transport = TTransport.TBufferedTransport(transport)
 
-  # Wrap in a protocol
-  protocol = TBinaryProtocol.TBinaryProtocol(transport)
+    # Wrap in a protocol
+    protocol = TBinaryProtocol.TBinaryProtocol(transport)
 
-  # Create a client to use the protocol encoder
-  client = Baltimore.Client(protocol)
+    # Create a client to use the protocol encoder
+    client = Baltimore.Client(protocol)
 
-  # Connect!
-  transport.open()
+    # Connect!
+    transport.open()
 
-  client.heartbeat()
-  print 'ping()'
+    client.heartbeat()
+    print 'Sent heartbeat.'
 
-  # Close!
-  transport.close()
+    amplifierState = client.amplifierState()
+    print 'Amplifier is: ' + ('On' if amplifierState else 'Off')
+
+    hourChimeState = client.hourChimeState()
+    print 'Hourly chimes are: ' + ('On' if hourChimeState else 'Off')
+
+    # Play!
+    client.play('audio/test.wav')
+
+    # Wait...
+    time.sleep(2)
+
+    # Stop!
+    client.stop()
+
+    # Close!
+    transport.close()
 
 except Thrift.TException, tx:
-  print '%s' % (tx.message)
+    print '%s' % (tx.message)
