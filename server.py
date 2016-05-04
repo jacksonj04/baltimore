@@ -28,11 +28,11 @@ lastHourChimed = None
 class AmplifierControl:
 
     amplifierPower = False
-    # socket = Energenie(1, amplifierPower)
+    socket = Energenie(1, amplifierPower)
 
     def on(self):
         print 'Powering up amplifier.'
-        # self.socket.on()
+        self.socket.on()
         self.amplifierPower = True
 
     def off(self):
@@ -44,7 +44,7 @@ class AmplifierControl:
         mixer.stopAudio()
         time.sleep(fadeoutDelay)
         print 'Powering down amplifier.'
-        # self.socket.off()
+        self.socket.off()
         self.amplifierPower = False
         print 'Amplifier off.'
 
