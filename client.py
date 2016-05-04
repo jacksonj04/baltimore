@@ -72,12 +72,12 @@ def runTest():
 
 
 def playThreePeal():
-    client.play('test.wav')
+    client.play('3peal.mp3')
     print 'Playing three peal bells.'
 
 
 def playWeddingPeal():
-    client.play('test.wav')
+    client.play('wedding.mp3')
     print 'Playing wedding bells.'
 
 
