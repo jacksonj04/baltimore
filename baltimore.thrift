@@ -14,14 +14,14 @@ service Baltimore {
    // One to get the state of the amplifier
    bool amplifierState(),
 
+   // Load a sound!
+   void load(1:string fileName),
+
    // Play a sound!
-   void play(1:string fileName),
+   void play(),
 
    // Stop playing a sound!
    void stop(),
-
-   // Play a test audio file
-   void test(),
 
    // Turn hourly bongs on and off.
    void hourChimeOn(),

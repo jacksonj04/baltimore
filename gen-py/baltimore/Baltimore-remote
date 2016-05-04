@@ -28,9 +28,9 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
   print('  void amplifierOn()')
   print('  void amplifierOff()')
   print('  bool amplifierState()')
-  print('  void play(string fileName)')
+  print('  void load(string fileName)')
+  print('  void play()')
   print('  void stop()')
-  print('  void test()')
   print('  void hourChimeOn()')
   print('  void hourChimeOff()')
   print('  bool hourChimeState()')
@@ -114,23 +114,23 @@ elif cmd == 'amplifierState':
     sys.exit(1)
   pp.pprint(client.amplifierState())
 
-elif cmd == 'play':
+elif cmd == 'load':
   if len(args) != 1:
-    print('play requires 1 args')
+    print('load requires 1 args')
     sys.exit(1)
-  pp.pprint(client.play(args[0],))
+  pp.pprint(client.load(args[0],))
+
+elif cmd == 'play':
+  if len(args) != 0:
+    print('play requires 0 args')
+    sys.exit(1)
+  pp.pprint(client.play())
 
 elif cmd == 'stop':
   if len(args) != 0:
     print('stop requires 0 args')
     sys.exit(1)
   pp.pprint(client.stop())
-
-elif cmd == 'test':
-  if len(args) != 0:
-    print('test requires 0 args')
-    sys.exit(1)
-  pp.pprint(client.test())
 
 elif cmd == 'hourChimeOn':
   if len(args) != 0:

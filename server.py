@@ -14,22 +14,25 @@ from thrift.server import TServer
 
 from datetime import datetime
 
+from gpiozero import Energenie
+
 # Variables!
+fadeinDelay = 3
 fadeoutDelay = 3
 heartbeatSilenceCount = 0
 clientConnected = False
 lastHourChimed = None
 
+
 # A class to control the amplifier
-
-
 class AmplifierControl:
 
     amplifierPower = False
+    # socket = Energenie(1, amplifierPower)
 
     def on(self):
         print 'Powering up amplifier.'
-        # WORK
+        # self.socket.on()
         self.amplifierPower = True
 
     def off(self):
@@ -38,37 +41,42 @@ class AmplifierControl:
         print 'Disabling hourly chimes.'
         hourChime = False
         print 'Stopping audio.'
-        mixer.stop()
+        mixer.stopAudio()
         time.sleep(fadeoutDelay)
         print 'Powering down amplifier.'
-        # WORK
+        # self.socket.off()
         self.amplifierPower = False
         print 'Amplifier off.'
 
+
 # A class to handle audio output
-
-
 class AudioMixer:
 
     def __init__(self):
         pygame.mixer.init()
 
-    def playTest(self):
-        print 'Playing test audio file.'
-        self.play('test/test.wav')
-
-    def play(self, filename, loops = 0):
-        print 'Playing audio file: ' + filename
+    def loadAudio(self, filename):
+        print 'Loading audio file: ' + filename
         pygame.mixer.music.load(filename)
+
+    def playAudio(self, loops=0):
+        print 'Playing loaded audio file'
+        pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(loops)
 
-    def stop(self):
+        # Fade it up!
+        for i in range(0, 100):
+            time.sleep(float(fadeinDelay)/100)
+            newVolume = i * 0.01
+            print 'volume is ' + str(newVolume)
+            pygame.mixer.music.set_volume(newVolume)
+
+    def stopAudio(self):
         print 'Stopping current audio.'
         pygame.mixer.music.fadeout(fadeoutDelay*1000)
 
+
 # This is where we respond to things.
-
-
 class BaltimoreHandler:
 
     def __init__(self):
@@ -106,22 +114,24 @@ class BaltimoreHandler:
         print 'Hourly chime state request. Replied with: ' + ('On' if hourChime else 'Off')
         return hourChime
 
-    # Load and play the given filename
-    def play(self, filename):
+    # Load the given filename
+    def load(self, filename):
         global mixer
-        mixer.play('audio/' + filename, -1)
+        mixer.loadAudio('audio/' + filename)
+
+    # Play the given filename
+    def play(self):
+        global mixer
+        mixer.playAudio(-1)
 
     # Fade the audio out.
     def stop(self):
         global mixer
-        mixer.stop()
-
-    # Load and play the test files
-    def test(self):
-        global mixer
-        mixer.playTest()
+        mixer.stopAudio()
 
 
+# This class looks after things that need to happen regularly, like chimes and
+# making sure we still have a client heartbeat.
 class tickTockThread(threading.Thread):
     def __init__(self, name='heartbeatThread'):
         self._stopevent = threading.Event()

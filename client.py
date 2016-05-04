@@ -66,19 +66,29 @@ def chimesOff():
     print 'Switching hourly chimes off.'
 
 
-def runTest():
-    client.test()
-    print 'Playing test audio.'
+def loadTest():
+    client.load('test.wav')
+    print 'Loading test.'
 
 
-def playThreePeal():
-    client.play('3peal.mp3')
-    print 'Playing three peal bells.'
+def loadThreePeal():
+    client.load('3peal.mp3')
+    print 'Loading three peal bells.'
 
 
-def playWeddingPeal():
-    client.play('wedding.mp3')
-    print 'Playing wedding bells.'
+def loadWeddingPeal():
+    client.load('wedding.mp3')
+    print 'Loading wedding bells.'
+
+
+def playAudio():
+    client.play()
+    print 'Playing audio.'
+
+
+def stopAudio():
+    client.stop()
+    print 'Stopping audio.'
 
 
 def refreshStatus():
@@ -161,14 +171,20 @@ chimesOffButton.pack()
 ampRefreshButton = Button(root, text="Refresh Status", command=refreshStatus)
 ampRefreshButton.pack()
 
-testButton = Button(root, text="Test", command=runTest)
-testButton.pack()
+loadTestButton = Button(root, text="Load: Test", command=loadTest)
+loadTestButton.pack()
 
-threePealButton = Button(root, text="Bells: Three Peal", command=playThreePeal)
+threePealButton = Button(root, text="Load: Bells: Three Peal", command=loadThreePeal)
 threePealButton.pack()
 
-weddingPealButton = Button(root, text="Bells: Wedding", command=playWeddingPeal)
+weddingPealButton = Button(root, text="Load: Bells: Wedding", command=loadWeddingPeal)
 weddingPealButton.pack()
+
+playButton = Button(root, text="Play Audio", command=playAudio)
+playButton.pack()
+
+stopButton = Button(root, text="Stop Audio", command=stopAudio)
+stopButton.pack()
 
 # Get the status of things before we start
 refreshStatus()
