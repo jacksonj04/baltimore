@@ -138,9 +138,16 @@ while (not connectedFlag):
 # Initialise the window root so we can line up some status strings
 
 root = Tkinter.Tk()
+
+w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+# root.overrideredirect(1)
+root.geometry("%dx%d+0+0" % (w, h))
+
 connectionStatusString = StringVar()
 ampStatusString = StringVar()
 chimesStatusString = StringVar()
+
+
 
 # Fire off the heartbeat thread.
 
@@ -157,34 +164,31 @@ chimesStatusLabel = Label(root, textvariable=chimesStatusString)
 chimesStatusLabel.pack()
 
 ampOnButton = Button(root, text="Amp On", command=ampOn)
-ampOnButton.pack()
+ampOnButton.pack(fill=BOTH, expand=1)
 
 ampOffButton = Button(root, text="Amp Off", command=ampOff)
-ampOffButton.pack()
+ampOffButton.pack(fill=BOTH, expand=1)
 
 chimesOnButton = Button(root, text="Chimes On", command=chimesOn)
-chimesOnButton.pack()
+chimesOnButton.pack(fill=BOTH, expand=1)
 
 chimesOffButton = Button(root, text="Chimes Off", command=chimesOff)
-chimesOffButton.pack()
+chimesOffButton.pack(fill=BOTH, expand=1)
 
 ampRefreshButton = Button(root, text="Refresh Status", command=refreshStatus)
-ampRefreshButton.pack()
-
-loadTestButton = Button(root, text="Load: Test", command=loadTest)
-loadTestButton.pack()
+ampRefreshButton.pack(fill=BOTH, expand=1)
 
 threePealButton = Button(root, text="Load: Bells: Three Peal", command=loadThreePeal)
-threePealButton.pack()
+threePealButton.pack(fill=BOTH, expand=1)
 
 weddingPealButton = Button(root, text="Load: Bells: Wedding", command=loadWeddingPeal)
-weddingPealButton.pack()
+weddingPealButton.pack(fill=BOTH, expand=1)
 
 playButton = Button(root, text="Play Audio", command=playAudio)
-playButton.pack()
+playButton.pack(fill=BOTH, expand=1)
 
 stopButton = Button(root, text="Stop Audio", command=stopAudio)
-stopButton.pack()
+stopButton.pack(fill=BOTH, expand=1)
 
 # Get the status of things before we start
 refreshStatus()
