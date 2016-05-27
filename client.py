@@ -66,11 +66,6 @@ def chimesOff():
     print 'Switching hourly chimes off.'
 
 
-def loadTest():
-    client.load('test.wav')
-    print 'Loading test.'
-
-
 def loadThreePeal():
     client.load('3peal.mp3')
     print 'Loading three peal bells.'
@@ -79,6 +74,10 @@ def loadThreePeal():
 def loadWeddingPeal():
     client.load('wedding.mp3')
     print 'Loading wedding bells.'
+
+def loadToll():
+    client.load('toll.mp3')
+    print 'Loading tolling bells.'
 
 
 def playAudio():
@@ -169,19 +168,22 @@ ampOnButton.pack(fill=BOTH, expand=1)
 ampOffButton = Button(root, text="Amp Off", command=ampOff)
 ampOffButton.pack(fill=BOTH, expand=1)
 
-chimesOnButton = Button(root, text="Chimes On", command=chimesOn)
-chimesOnButton.pack(fill=BOTH, expand=1)
+# chimesOnButton = Button(root, text="Chimes On", command=chimesOn)
+# chimesOnButton.pack(fill=BOTH, expand=1)
 
-chimesOffButton = Button(root, text="Chimes Off", command=chimesOff)
-chimesOffButton.pack(fill=BOTH, expand=1)
+# chimesOffButton = Button(root, text="Chimes Off", command=chimesOff)
+# chimesOffButton.pack(fill=BOTH, expand=1)
 
-ampRefreshButton = Button(root, text="Refresh Status", command=refreshStatus)
-ampRefreshButton.pack(fill=BOTH, expand=1)
+# ampRefreshButton = Button(root, text="Refresh Status", command=refreshStatus)
+# ampRefreshButton.pack(fill=BOTH, expand=1)
 
 threePealButton = Button(root, text="Load: Bells: Three Peal", command=loadThreePeal)
 threePealButton.pack(fill=BOTH, expand=1)
 
 weddingPealButton = Button(root, text="Load: Bells: Wedding", command=loadWeddingPeal)
+weddingPealButton.pack(fill=BOTH, expand=1)
+
+weddingPealButton = Button(root, text="Load: Bells: Toll", command=loadToll)
 weddingPealButton.pack(fill=BOTH, expand=1)
 
 playButton = Button(root, text="Play Audio", command=playAudio)
