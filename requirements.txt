@@ -1,3 +1,0 @@
-thrift
-pyyaml
-gpiozero

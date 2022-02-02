@@ -1,7 +1,7 @@
 import sys
 import yaml
 import time
-import Tkinter
+import tkinter
 import threading
 
 sys.path.append('gen-py')
@@ -13,11 +13,11 @@ from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
 
-from Tkinter import *
+from tkinter import *
 
 
 def callback():
-    print "click!"
+    print("click!")
 
 
 class heartbeatThread(threading.Thread):
@@ -30,12 +30,12 @@ class heartbeatThread(threading.Thread):
         while not self._stopevent.isSet():
             try:
                 client.heartbeat()
-                print 'Heartbeat: Server alive.'
+                print("Heartbeat: Server alive.")
                 connectionStatusString.set('Connected')
 
-            except Thrift.TException, tx:
+            except Thrift.TException:
                 connectionStatusString.set('Not Connected')
-                print 'Heartbeat: Unable to reach server.'
+                print("Heartbeat: Unable to reach server.")
 
             root.update_idletasks()
 
@@ -48,46 +48,46 @@ class heartbeatThread(threading.Thread):
 
 def ampOn():
     client.amplifierOn()
-    print 'Powering up amplifier.'
+    print("Powering up amplifier.")
 
 
 def ampOff():
     client.amplifierOff()
-    print 'Powering down amplifier.'
+    print("Powering down amplifier.")
 
 
 def chimesOn():
     client.hourChimeOn()
-    print 'Switching hourly chimes on.'
+    print("Switching hourly chimes on.")
 
 
 def chimesOff():
     client.hourChimeOff()
-    print 'Switching hourly chimes off.'
+    print("Switching hourly chimes off.")
 
 
 def loadThreePeal():
     client.load('3peal.mp3')
-    print 'Loading three peal bells.'
+    print("Loading three peal bells.")
 
 
 def loadWeddingPeal():
     client.load('wedding.mp3')
-    print 'Loading wedding bells.'
+    print("Loading wedding bells.")
 
 def loadToll():
     client.load('toll.mp3')
-    print 'Loading tolling bells.'
+    print("Loading tolling bells.")
 
 
 def playAudio():
     client.play()
-    print 'Playing audio.'
+    print("Playing audio.")
 
 
 def stopAudio():
     client.stop()
-    print 'Stopping audio.'
+    print("Stopping audio.")
 
 
 def refreshStatus():
@@ -96,11 +96,11 @@ def refreshStatus():
     ampStatusString.set('Amp On' if ampState else 'Amp Off')
     chimesStatusString.set('Chimes On' if chimeState else 'Chimes Off')
     root.update_idletasks()
-    print 'Updating server status.'
+    print("Updating server status.")
 
 # Load up the config
 with open("config.yml", 'r') as configFile:
-    conf = yaml.load(configFile)
+    conf = yaml.safe_load(configFile)
 
 connectedFlag = False
 
@@ -124,19 +124,19 @@ while (not connectedFlag):
         transport.open()
 
         # Hooray!
-        print 'Connected to server.'
+        print("Connected to server.")
         connectedFlag = True
 
-    except Thrift.TException, tx:
-        print '%s' % (tx.message)
-        print 'Retrying in 10 seconds.'
+    except Thrift.TException as tx:
+        print(tx.message)
+        print("Retrying in 10 seconds.")
         time.sleep(10)
 
 # Made it here? We're connected! Awesome!
 
 # Initialise the window root so we can line up some status strings
 
-root = Tkinter.Tk()
+root = tkinter.Tk()
 
 w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 # root.overrideredirect(1)

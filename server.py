@@ -31,22 +31,22 @@ class AmplifierControl:
     socket = Energenie(1, amplifierPower)
 
     def on(self):
-        print 'Powering up amplifier.'
+        print("Powering up amplifier.")
         self.socket.on()
         self.amplifierPower = True
 
     def off(self):
         global hourChime
-        print 'Beginning amplifier power-down sequence.'
-        print 'Disabling hourly chimes.'
+        print("Beginning amplifier power-down sequence.")
+        print("Disabling hourly chimes.")
         hourChime = False
-        print 'Stopping audio.'
+        print("Stopping audio.")
         mixer.stopAudio()
         time.sleep(fadeoutDelay)
-        print 'Powering down amplifier.'
+        print("Powering down amplifier.")
         self.socket.off()
         self.amplifierPower = False
-        print 'Amplifier off.'
+        print("Amplifier off.")
 
 
 # A class to handle audio output
@@ -56,11 +56,11 @@ class AudioMixer:
         pygame.mixer.init()
 
     def loadAudio(self, filename):
-        print 'Loading audio file: ' + filename
+        print("Loading audio file: ") + filename
         pygame.mixer.music.load(filename)
 
     def playAudio(self, loops=0):
-        print 'Playing loaded audio file'
+        print("Playing loaded audio file")
         pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(loops)
 
@@ -68,11 +68,11 @@ class AudioMixer:
         for i in range(0, 100):
             time.sleep(float(fadeinDelay)/100)
             newVolume = i * 0.01
-            print 'volume is ' + str(newVolume)
+            print("volume is ") + str(newVolume)
             pygame.mixer.music.set_volume(newVolume)
 
     def stopAudio(self):
-        print 'Stopping current audio.'
+        print("Stopping current audio.")
         pygame.mixer.music.fadeout(fadeoutDelay*1000)
 
 
@@ -86,7 +86,7 @@ class BaltimoreHandler:
         global clientConnected, heartbeatSilenceCount
         heartbeatSilenceCount = 0
         clientConnected = True
-        print 'Heartbeat received from client!'
+        print("Heartbeat received from client!")
 
     def amplifierOff(self):
         global amplifier
@@ -106,12 +106,12 @@ class BaltimoreHandler:
 
     def amplifierState(self):
         global amplifier
-        print 'Amplifier state request. Replied with: ' + ('On' if amplifier.amplifierPower else 'Off')
+        print("Amplifier state request. Replied with: ") + ('On' if amplifier.amplifierPower else 'Off')
         return amplifier.amplifierPower
 
     def hourChimeState(self):
         global hourChime
-        print 'Hourly chime state request. Replied with: ' + ('On' if hourChime else 'Off')
+        print("Hourly chime state request. Replied with: ") + ('On' if hourChime else 'Off')
         return hourChime
 
     # Load the given filename
@@ -147,7 +147,7 @@ class tickTockThread(threading.Thread):
 
             # Make sure there's a client connected. If not, gracefully kill things.
             if (heartbeatSilenceCount > 10 and clientConnected):
-                print 'Client has disappeared! Powering down amplifier.'
+                print("Client has disappeared! Powering down amplifier.")
                 amplifier.off()
                 clientConnected = False
 
@@ -156,8 +156,8 @@ class tickTockThread(threading.Thread):
             if hourChime:
 
                 # Is it the top of the hour, and not the last chimed hour?
-                if (datetime.now().minute is 00 and
-                        datetime.now().hour is not lastHourChimed):
+                if (datetime.now().minute == 00 and
+                        datetime.now().hour != lastHourChimed):
                     hour = datetime.now().hour
 
                     # Record that we've done this hour, or we'll be bonging all over the shop.
@@ -170,10 +170,10 @@ class tickTockThread(threading.Thread):
                         hour = hour - 12
 
                     # If the hour is 0 it's either midnight, or noon. Either way it's 12 bongs!
-                    if hour is 0:
+                    if hour == 0:
                         hour = 12
 
-                    print 'Chiming the hour! Number of bongs: ' + str(hour)
+                    print("Chiming the hour! Number of bongs: ") + str(hour)
 
                     mixer.play('chimes/bong.wav', hour - 1)
 
@@ -198,7 +198,7 @@ thriftServer = TServer.TSimpleServer(processor, transport, tfactory, pfactory)
 # This should be the default state of affairs.
 hourChime = False
 
-print 'Good morning Baltimore!'
+print("Good morning Baltimore!")
 
 # Initialise our tasty objects!
 amplifier = AmplifierControl()
@@ -211,4 +211,4 @@ tickTock.start()
 # Tell Thrift to start listening in
 thriftServer.serve()
 
-print 'Goodbye.'
+print("Goodbye.")
